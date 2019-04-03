@@ -7,7 +7,7 @@ ManageCourseRouter.route('/').post(function (req, res) {
     if (err) {
       console.log(err)
     } else {
-        // res.send(courses)
+      // res.send(courses)
       res.render('ManageCourse', {
         courses: courses
       })
