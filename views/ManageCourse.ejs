@@ -85,9 +85,9 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-th-list"></i> 
-                    <span id="subjectId"><%= courses[0].subject.subjectId %></span> 
-                    <span id="subjectName"><%= courses[0].subject.subjectName %></span> 
+                <h1><i class="fa fa-th-list"></i>
+                    <span id="subjectId"><%= subject.subjectId %></span>
+                    <span id="subjectName"><%= subject.subjectName %></span>
                 </h1>
 
                 <p>จัดการคอร์ส</p>
@@ -108,9 +108,11 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th>รหัสวิชา</th>
-                                    <th>รายวิชา</th>
-                                    <th>เปิดสอน</th>
+                                    <th>กลุ่มเรียน</th>
+                                    <th>อาจารย์ผู้สอน</th>
+                                    <th>จำนวนที่นั่ง</th>
+                                    <th>จำนวนนิสิต</th>
+                                    <th>รายชื่อนิสิต</th>
                                     <th>ลบ</th>
                                     <th>แก้ไข</th>
                                 </tr>
@@ -119,22 +121,29 @@
                                 <% for(var i=0; i < courses.length; i++) { %>
                                 <tr>
                                     <td>
-                                        <%= courses[i].subject.subjectId %>
+                                        <%= courses[i].courseGroup %>
                                     </td>
                                     <td>
-                                        <%= courses[i].subject.subjectName %>
+                                        <%= courses[i].professor %>
                                     </td>
                                     <td>
-                                        <button class="btn btn-outline-primary">เปิดสอน</button>
+                                        <%= courses[i].courseSeat %>
                                     </td>
                                     <td>
-                                        <a href="managesubject/delete/<%= courses[i]._id %>"> <button type="button"
-                                                class="btn btn-outline-danger btn-block"
-                                                style="font-size: 15px;">ลบ</button></a>
+                                        <%= courses[i].totalStudent %>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-outline-primary">รายชื่อนิสิต</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-danger btn-block"
+                                            style="font-size: 15px;"
+                                            onclick="deleteCourse('<%= courses[i]._id %>')">ลบ</button>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-outline-warning btn-block"
-                                            data-toggle="modal" data-target="#EditModal" onclick="feedRoom()">แก้ไข</button>
+                                            data-toggle="modal" data-target="#EditModal"
+                                            onclick="feedRoom()">แก้ไข</button>
                                     </td>
                                 </tr>
                                 <% } %>
@@ -155,22 +164,26 @@
                     <h5 class="modal-title" id="exampleModalLabel">เพิ่มรายวิชา</h5>
                 </div>
                 <div class="modal-body">
+                    <p>
+                        <span id="subjectId"><%= subject.subjectId %></span>
+                        <span id="subjectName"><%= subject.subjectName %></span>
+                    </p>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">รหัสวิชา</span>
+                            <span class="input-group-text">กลุ่มเรียน</span>
                         </div>
-                        <input type="text" id="subjectId" name="subjectId" class="form-control">
+                        <input type="text" id="courseGroup" name="courseGroup" class="form-control">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">รายวิชา</span>
+                            <span class="input-group-text">จำนวนที่นั่ง</span>
                         </div>
-                        <input type="text" id="subjectName" name="subjectName" class="form-control">
+                        <input type="text" id="courseSeat" name="courseSeat" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <button type="submit" class="btn btn-success" onclick="addSubject()">ยืนยัน</button>
+                    <button type="submit" class="btn btn-success" onclick="addCourse()">ยืนยัน</button>
                 </div>
             </div>
         </div>
@@ -232,15 +245,31 @@
             $('#editSubjectName').val(subjectName)
         }
 
-        function addSubject() {
+        function addCourse() {
+            var coruse = {
+                subject: {
+                    subjectId: '<%= subject.subjectId %>',
+                    subjectName: '<%= subject.subjectName %>'
+                },
+                courseGroup: $('#courseGroup').val(),
+                courseSeat: $('#courseSeat').val()
+            }
+
             $.ajax({
                 type: "post",
-                url: "http://localhost:4000/managesubject/create",
-                data: {
-                    subjectId: $('#subjectId').val(),
-                    subjectName: $('#subjectName').val()
-                },
+                url: "http://localhost:4000/managecourse/create",
+                data: coruse,
                 dataType: "json",
+                success: () => {
+                    window.location.reload()
+                }
+            })
+        }
+
+        function deleteCourse(id) {
+            $.ajax({
+                type: "delete",
+                url: "http://localhost:4000/managecourse/delete/"+id,
                 success: () => {
                     window.location.reload()
                 }

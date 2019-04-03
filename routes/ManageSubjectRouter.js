@@ -24,11 +24,6 @@ ManageSubjectRouter.post('/create', (req, res, next) => {
       console.log('ไม่สำเร็จ')
       return res.send(err.message)
     } else {
-      var course = new Course({
-        subject: req.body
-      })
-      course.save(() => {
-      })
       console.log('สำเร็จ')
       res.status(200).json({
         success: true
