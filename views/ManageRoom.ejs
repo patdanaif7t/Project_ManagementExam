@@ -1,34 +1,332 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <title>MY APP</title>
+  <meta charset="utf-8">
+  <title>จัดการห้อง</title>
+  <link rel="shortcut icon" type="image/png" href="http://www.bhwelder.com.my/img/hotproduct.png" />
+  <!-- Main CSS-->
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <!-- Font-icon css-->
+  <link rel="stylesheet" type="text/css"
+    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 </head>
-<body>
-   
- 
- <!--  SINGLE FILE -->
-<form action="/uploadfile" enctype="multipart/form-data" method="POST"> 
-   <input type="file" name="myFile" />
-   <input type="submit" value="Upload a file"/>
-</form>
- 
- 
-<!-- MULTIPLE FILES -->
- 
-<form action="/uploadmultiple"  enctype="multipart/form-data" method="POST">
-  Select images: <input type="file" name="myFiles" multiple>
-  <input type="submit" value="Upload your files"/>
-</form>
- 
-  <!--   PHOTO-->
- 
-<form action="/upload/photo" enctype="multipart/form-data" method="POST"> 
-  <input type="file" name="myImage" accept="image/*" />
-  <input type="submit" value="Upload Photo"/>
-</form>
- 
- 
- 
+
+<body class="app sidebar-mini rtl">
+  <!-- Navbar-->
+  <header class="app-header"><a class="app-header__logo" href="index.html">ASAP</a>
+    <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
+      aria-label="Hide Sidebar"></a>
+    <!-- Navbar Right Menu-->
+    <ul class="app-nav">
+      <li class="app-search">
+        <input class="app-search__input" type="search" placeholder="Search">
+        <button class="app-search__button"><i class="fa fa-search"></i></button>
+      </li>
+
+      <!-- User Menu-->
+      <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i
+            class="fa fa-user fa-lg"></i></a>
+        <ul class="dropdown-menu settings-menu dropdown-menu-right">
+          <li><a class="dropdown-item" href="#"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
+          <li><a class="dropdown-item" href="#"><i class="fa fa-user fa-lg"></i> Profile</a></li>
+          <li><a class="dropdown-item" href="login"><i class="fa fa-sign-out fa-lg"></i> Logout</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </header>
+  <!-- Sidebar menu-->
+  <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+  <aside class="app-sidebar">
+    <div class="app-sidebar__user"><img class="app-sidebar__user-avatar"
+        src="https://www.img.in.th/images/907a16df723b68dd9b01785c32ef6a28.jpg" alt="User Image" height="48px"
+        width="48">
+      <div>
+        <p class="app-sidebar__user-name">ภัทรดนัย ช่างเหลา</p>
+        <p class="app-sidebar__user-designation">สถานะ : Admin</p>
+      </div>
+    </div>
+    <ul class="app-menu">
+      <li><a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-podcast"></i><span
+            class="app-menu__label">ประกาศ</span></a></li>
+      <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+            class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">จัดการบุคลากร</span><i
+            class="treeview-indicator fa fa-angle-right"></i></a>
+        <ul class="treeview-menu">
+          <li><a class="treeview-item" href="#"><i class="icon fa fa-cogs"></i>
+              จัดการเจ้าหน้าที่</a></li>
+          <li><a class="treeview-item" href="#" rel="noopener"><i class="icon fa fa-cogs"></i>
+              จัดการอาจารย์</a></li>
+          <li><a class="treeview-item" href="#"><i class="icon fa fa-cogs"></i>จัดการนิสิต</a></li>
+        </ul>
+      </li>
+      <li><a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-sun-o"></i><span
+            class="app-menu__label">จัดการการสอบ</span></a></li>
+      <li><a class="app-menu__item" href="#"><i class="app-menu__icon fa fa-sun-o"></i><span
+            class="app-menu__label">จัดการรายวิชา</span></a></li>
+      <li><a class="app-menu__item" href="/mangebuilding"><i class="app-menu__icon fa fa-sun-o"></i><span
+            class="app-menu__label">จัดการตึก</span></a></li>
+            <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+              class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">จัดการห้อง</span><i
+              class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="/mangeroom"><i class="icon fa fa-cogs"></i>
+                ตึก IF</a></li>
+            <li><a class="treeview-item" href="#" rel="noopener"><i class="icon fa fa-cogs"></i>
+                ตึก UAD</a></li>
+            <li><a class="treeview-item" href="#"><i class="icon fa fa-cogs"></i>ตึก KC</a></li>
+          </ul>
+        </li>
+    </ul>
+  </aside>
+  <main class="app-content">
+    <div class="app-title">
+      <div>
+        <h1><i class="fa fa-th-list"></i> จัดการห้องตึก IF</h1>
+
+        <p>เพิ่ม ลบ แก้ไข ห้อง</p>
+      </div>
+      <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+        <li class="breadcrumb-item">จัดการห้อง</li>
+
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tile">
+          <div class="tile-body">
+            <button type="button" class="btn btn-outline-success btn-block"
+              style="font-size: 14px; width: 100px;height: 30px;; float: right;" data-toggle="modal"
+              data-target="#AddModal">เพิ่ม</button>
+            <table class="table table-hover table-bordered" id="sampleTable">
+              <thead>
+                <tr>
+                  <!-- <th>ชื่อตึก</th> -->
+                  <th>ชื่อห้อง</th>
+                  <th>ประเภทห้อง</th>
+                  <th>ชั้น</th>
+                  <th>จำนวนที่นั่ง</th>
+                  <th>ลบ</th>
+                  <th>แก้ไข</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for(var i=0; i < rooms.length; i++) { %>
+                <tr>
+                  <!-- <td>
+                    <%= rooms[i].buildingId %>
+                  </td> -->
+                  <td>
+                    <%= rooms[i].roomName %>
+                  </td>
+                  <td>
+                    <%= rooms[i].roomType %>
+                  </td>
+                  <td>
+                    <%= rooms[i].roomFloor %>
+                  </td>
+                  <td>
+                    <%= rooms[i].roomSeat %>
+                  </td>
+                  <td>
+                    <a href="mangeroom/delete/<%= rooms[i]._id %>"> <button type="button"
+                        class="btn btn-outline-danger btn-block" style="font-size: 15px;">ลบ</button></a>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-outline-warning btn-block" data-toggle="modal"
+                      data-target="#EditModal" onclick="feedRoom('<%= rooms[i]._id %>','<%= rooms[i].buildingId %>',
+                      ' <%= rooms[i].roomName %>','<%= rooms[i].roomType %>','<%= rooms[i].roomFloor %>',
+                      '<%= rooms[i].roomSeat %>','<%= rooms[i].roomplan %>')">แก้ไข</button>
+                  </td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal เพิ่มห้อง  -->
+  <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">เพิ่มห้อง</h5>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">ชื่อตึก</span>
+            </div>
+            <input type="text" id="buildingId" name="buildingId" class="form-control">
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">ชื่อห้อง</span>
+            </div>
+            <input type="text" id="roomName" name="roomName" class="form-control">
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">ประเภท</span>
+            </div>
+            <input type="text" id="roomType" name="roomType" class="form-control">
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">ชั้น</span>
+            </div>
+            <input type="text" id="roomFloor" name="roomFloor" class="form-control">
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">จำนวนที่นั่ง</span>
+            </div>
+            <input type="text" id="roomSeat" name="roomSeat" class="form-control">
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">ผังห้อง</span>
+            </div>
+            <textarea class="form-control" id="roomplan" name="roomplan" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+          <button type="submit" class="btn btn-success" onclick="addRoom()">ยืนยัน</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal เพิ่มห้อง  -->
+
+  <!-- Modal แก้ไขห้อง  -->
+  <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form action="mangeroom/update" method="post">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">แก้ไขห้อง</h5>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">ชื่อตึก</span>
+              </div>
+              <input type="text" id="sendid" name="_id" class="form-control" style="display: none">
+              <input type="text" id="editbuildingId" name="buildingId" class="form-control">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">ชื่อห้อง</span>
+              </div>
+              <input type="text" id="editroomName" name="roomName" class="form-control">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">ประเภท</span>
+              </div>
+              <input type="text" id="editroomType" name="roomType" class="form-control">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">ชั้น</span>
+              </div>
+              <input type="text" id="editroomFloor" name="roomFloor" class="form-control">
+            </div>
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">จำนวนที่นั่ง</span>
+              </div>
+              <input type="text" id="editroomSeat" name="roomSeat" class="form-control">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">ผังห้อง</span>
+              </div>
+              <textarea class="form-control" id="editroomplan" name="roomplan" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+            <button type="submit" class="btn btn-success">ยืนยัน</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Modal แก้ไขห้อง  -->
+
+  <!-- Essential javascripts for application to work-->
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- The javascript plugin to display page loading on top-->
+  <script src="js/plugins/pace.min.js"></script>
+  <!-- Page specific javascripts-->
+  <!-- Data table plugin-->
+  <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
+  <script type="text/javascript">
+    $('#sampleTable').DataTable();
+
+    var feedRoom = (id, editbuildingId, editroomName, editroomType, editroomFloor,
+      editroomSeat, editroomplan) => {
+      console.log(editroomSeat);
+      console.log(editroomplan);
+      id: $('#sendid').val(id)
+      editbuildingId: $('#editbuildingId').val(editbuildingId)
+      editroomName: $('#editroomName').val(editroomName)
+      editroomType: $('#editroomType').val(editroomType)
+      editroomFloor: $('#editroomFloor').val(editroomFloor)
+      editroomSeat: $('#editroomSeat').val(editroomSeat)
+      editroomplan: $('#editroomplan').val(editroomplan)
+    }
+
+    function addRoom() {
+      var plan = $('#roomplan').val()
+      var roomplan = [];
+      roomplan.push(plan.split(' '))
+      var jsonData = {
+        buildingId: $('#buildingId').val(),
+        roomName: $('#roomName').val(),
+        roomType: $('#roomType').val(),
+        roomFloor: $('#roomFloor').val(),
+        roomSeat: $('#roomSeat').val(),
+        roomplan: roomplan
+      }
+      console.log(jsonData);
+
+      $.ajax({
+        type: "post",
+        url: "http://localhost:4000/mangeroom/create",
+        data: {
+          buildingId: $('#buildingId').val(),
+          roomName: $('#roomName').val(),
+          roomType: $('#roomType').val(),
+          roomFloor: $('#roomFloor').val(),
+          roomSeat: $('#roomSeat').val(),
+          roomplan: roomplan
+        },
+        dataType: "json",
+        success: () => {
+          window.location.reload()
+        }
+      })
+    }
+  </script>
 </body>
+
 </html>

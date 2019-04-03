@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>จัดการตึก</title>
+    <title>จัดการห้อง</title>
     <link rel="shortcut icon" type="image/png" href="http://www.bhwelder.com.my/img/hotproduct.png" />
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -85,13 +85,13 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-th-list"></i>จัดการตึก</h1>
+                <h1><i class="fa fa-th-list"></i> จัดการรายวิชา</h1>
 
-                <p>เพิ่ม ลบ แก้ไข ตึก</p>
+                <p>เพิ่มรายวิชา</p>
             </div>
             <ul class="app-breadcrumb breadcrumb side">
                 <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-                <li class="breadcrumb-item">จัดการตึก</li>
+                <li class="breadcrumb-item">จัดการรายวิชา</li>
 
             </ul>
         </div>
@@ -105,39 +105,35 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th>ชื่อย่อ</th>
-                                    <th>ชื่อตึก</th>
-                                    <th>จัดการห้อง</th>
+                                    <th>รหัสวิชา</th>
+                                    <th>รายวิชา</th>
+                                    <th>เปิดสอน</th>
                                     <th>ลบ</th>
                                     <th>แก้ไข</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for(var i=0; i < buildings.length; i++) { %>
+                                <% for(var i=0; i < subjects.length; i++) { %>
                                 <tr>
                                     <td>
-                                        <%= buildings[i].buildingId %>
+                                        <%= subjects[i].subjectId %>
                                     </td>
                                     <td>
-                                        <%= buildings[i].buildingName %>
+                                        <%= subjects[i].subjectName %>
                                     </td>
                                     <td>
-                                        <a href="/mangeroom">
-                                            <button type="button" class="btn btn-outline-info btn-block"
-                                                style="font-size: 15px;">จัดการห้อง</button>
-                                        </a>
-
+                                        
+                                        <button class="btn btn-outline-primary" onclick="openCourse('<%= subjects[i].subjectId %>')">เปิดสอน</button>
                                     </td>
                                     <td>
-                                        <a href="mangebuilding/delete/<%= buildings[i]._id %>"> <button type="button"
+                                        <a href="managesubject/delete/<%= subjects[i]._id %>"> <button type="button"
                                                 class="btn btn-outline-danger btn-block"
                                                 style="font-size: 15px;">ลบ</button></a>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-outline-warning btn-block"
-                                            style="font-size: 15px;"
-                                            onclick="feedBuilding('<%= buildings[i]._id %>','<%= buildings[i].buildingId%>',' <%= buildings[i].buildingName %>')"
-                                            data-toggle="modal" data-target="#EditModal">แก้ไข</button>
+                                            data-toggle="modal" data-target="#EditModal" onclick="feedRoom('<%= subjects[i]._id %>','<%= subjects[i].subjectId %>',
+                      ' <%= subjects[i].subjectName %>')">แก้ไข</button>
                                     </td>
                                 </tr>
                                 <% } %>
@@ -149,27 +145,58 @@
         </div>
     </main>
 
-    <!-- Modal เพิ่มตึก  -->
+    <!-- Modal เพิ่มห้อง  -->
     <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form action="mangebuilding/create" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มรายวิชา</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">รหัสวิชา</span>
+                        </div>
+                        <input type="text" id="subjectId" name="subjectId" class="form-control">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">รายวิชา</span>
+                        </div>
+                        <input type="text" id="subjectName" name="subjectName" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-success" onclick="addSubject()">ยืนยัน</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal เพิ่มห้อง  -->
+
+    <!-- Modal แก้ไขห้อง  -->
+    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="mangeroom/update" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">เพิ่มตึก</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">แก้ไขห้อง</h5>
                     </div>
                     <div class="modal-body">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">ชื่อย่อ</span>
+                                <span class="input-group-text">รหัสวิชา</span>
                             </div>
-                            <input type="text" id="buildingId" name="buildingId" class="form-control">
+                            <input type="text" id="editSubjectId" name="editSubjectId" class="form-control">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">ชื่อตึก</span>
+                                <span class="input-group-text">รายวิชา</span>
                             </div>
-                            <input type="text" id="buildingName" name="buildingName" class="form-control">
+                            <input type="text" id="editSubjectName" name="editSubjectName" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -180,42 +207,8 @@
             </form>
         </div>
     </div>
-    <!-- Modal เพิ่มตึก  -->
+    <!-- Modal แก้ไขห้อง  -->
 
-    <!-- Modal แก้ไขตึก  -->
-    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form action="mangebuilding/update" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">เพิ่มตึก</h5>
-                    </div>
-                    <div class="modal-body">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-
-                                <span class="input-group-text">ชื่อย่อ</span>
-                            </div>
-                            <input type="text" id="sendid" name="_id" class="form-control" style="display: none">
-                            <input type="text" id="editbuildingId" name="buildingId" class="form-control">
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">ชื่อตึก</span>
-                            </div>
-                            <input type="text" id="editbuildingName" name="buildingName" class="form-control">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                        <button type="submit" class="btn btn-success">ยืนยัน</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- Modal แก้ไขตึก  -->
     <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -229,26 +222,36 @@
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
+        var editID
         $('#sampleTable').DataTable();
 
-        // var feedBuilding = (id, editid, editname) => {
-        //     id: $('#sendid').val(id)
-        //     editid: $('#editbuildingId').val(editid)
-        //     editname: $('#editbuildingName').val(editname)
-        // }
+        var feedRoom = (_id, subjectId, subjectName) => {
+            editID = _id
+            $('#editSubjectId').val(subjectId)
+            $('#editSubjectName').val(subjectName)
+        }
 
+        function addSubject() {
+            $.ajax({
+                type: "post",
+                url: "http://localhost:4000/managesubject/create",
+                data: {
+                    subjectId: $('#subjectId').val(),
+                    subjectName: $('#subjectName').val()
+                },
+                dataType: "json",
+                success: () => {
+                    window.location.reload()
+                }
+            })
+        }
 
-
-        //    var test = () => {
-        //     var arr1 = ['a', 'b', 'c', 'd']
-        //     var arr2 = [1, 2, 3, 4, 5, 6]
-
-        //     for (i = 0; i < arr1.length; i++) {
-        //         for (j = 0; j < arr2.length; j++) {
-        //             console.log(arr1[i] + arr2[j])
-        //         }
-        //     }
-        //    }
+        let openCourse = (subjectId) => {
+            var form = $('<form action="http://localhost:4000/managecourse" method="POST"> ' +
+                '<input type="text" name="subjectId" value="' + subjectId +'" /></form>')
+            $('body').append(form)
+            form.submit()
+        }
     </script>
 </body>
 
