@@ -28,9 +28,15 @@ ManageCourseRouter.post('/create', (req, res, next) => {
       console.log('ไม่สำเร็จ')
       return res.send(err.message)
     } else {
+<<<<<<< HEAD
       console.log('สำเร็จ')
       res.status(200).json({
         success: true
+=======
+      // res.send(courses)
+      res.render('ManageCourse', {
+        courses: courses
+>>>>>>> fb884460fa70ced9415bad494059f856d5197b74
       })
     }
     // res.redirect('/mangeroom')
