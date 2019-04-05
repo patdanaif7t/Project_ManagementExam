@@ -10,21 +10,15 @@ LoginRouter.route('/').get(function (req, res) {
 })
 
 LoginRouter.route('/').post((req, res) => {
-  console.log(req.body.email)
-  console.log(req.body.pass)
-
   if (req.body.email && req.body.pass) {
     Person.findOne({
       username: req.body.email
-    }).then(person => {
-      bcrypt.compare(req.body.pass, person.password, function (_err, res) {
-        console.log("ผ่าน");
-        
-        // res.redirect('/mangeperson')
-      }).catch(_err => {
-        res.render('login', {
-          error: 'ไม่ถูก'
-        })
+    }, (_err, person) => {
+      console.log(person.password);
+      bcrypt.compare(req.body.pass, person.password, (_err, password) => {
+        if (password) {
+          res.redirect('/mangeperson')
+        }
       })
     })
   }

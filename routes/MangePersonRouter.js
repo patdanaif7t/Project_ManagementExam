@@ -17,9 +17,7 @@ MangePersonRouter.route('/').get(function (req, res) {
 })
 
 MangePersonRouter.route('/').delete((req, res) => {
-  Person.deleteOne({
-    id: req.body.id
-  }, () => {
+  Person.findByIdAndDelete(req.body.id, () => {
     res.json({
       success: true
     })
